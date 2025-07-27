@@ -4,7 +4,7 @@
 
 Analyser l'évolution de la pandémie COVID-19 dans différents pays, puis prédire les cas en France à l’aide de deux modèles :
 - Régression Linéaire simple
-- Random Forest Multi-sortie
+- randomForest Multi-sortie
 
 ---
 
