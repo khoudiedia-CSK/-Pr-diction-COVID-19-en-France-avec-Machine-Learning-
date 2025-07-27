@@ -1,6 +1,3 @@
-# -Pr-diction-COVID-19-en-France-avec-Machine-Learning-
-🔬 Analyse et prédiction de l’évolution de la pandémie de COVID-19 en France à l’aide d’algorithmes de Machine Learning (régression linéaire et Random Forest). Données traitées, modélisation, visualisation et prévisions à court terme.
-
 # 📊 Prédiction COVID-19 dans le monde avec Machine Learning
 
 ## 🎯 Objectif
