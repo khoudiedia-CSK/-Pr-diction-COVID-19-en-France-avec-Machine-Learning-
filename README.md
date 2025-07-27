@@ -91,11 +91,9 @@ Données affichées : Données réelles + prédictions sur 7 jours
 
 <img width="1103" height="230" alt="image" src="https://github.com/user-attachments/assets/fd5b2f1c-8360-48d6-81e3-2701e6b2d6bb" />
 
-![Deaths](images/pred_deaths.png) 
 
 <img width="1097" height="236" alt="image" src="https://github.com/user-attachments/assets/eac5cdb7-d495-4e67-9555-1608c50347c3" />
 
-![Recovered](images/pred_recovered.png)
 
 <img width="1084" height="249" alt="image" src="https://github.com/user-attachments/assets/65ad1fb2-5c72-4fc2-8de7-da37fa8281e3" />
 
