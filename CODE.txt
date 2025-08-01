@@ -1,0 +1,108 @@
+# 📌 1. Importation des bibliothèques
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# 📌 2. Chargement des données
+df = pd.read_csv('covid_19_clean_complete.csv')
+df['Date'] = pd.to_datetime(df['Date'])
+
+# 📌 3. Gestion des valeurs manquantes
+df['Province/State'] = df['Province/State'].fillna('')
+
+# 📌 4. Top 10 des pays les plus touchés (cas confirmés cumulés)
+top10 = df.groupby("Country/Region")['Confirmed'].max().sort_values(ascending=False).head(10)
+plt.figure(figsize=(10,6))
+sns.barplot(x=top10.values, y=top10.index, palette="Reds_r")
+plt.title("Top 10 pays les plus touchés par COVID-19 (cas confirmés cumulés)")
+plt.xlabel("Cas Confirmés")
+plt.ylabel("Pays")
+plt.tight_layout()
+plt.savefig("images/top10_pays.png")
+plt.show()
+
+# 📌 5. Filtrage pour la France
+france_df = df[df['Country/Region'] == 'France']
+france_df = france_df.groupby('Date')[['Confirmed', 'Deaths', 'Recovered']].sum().reset_index()
+
+# Ajout de la variable 'Day' = nombre de jours depuis le début
+france_df['Day'] = (france_df['Date'] - france_df['Date'].min()).dt.days
+
+# -------------------------------
+# 📌 6. Modèle 1 : Régression linéaire simple (Confirmed)
+# -------------------------------
+X = france_df[['Day']]
+y = france_df['Confirmed']
+
+model_lr = LinearRegression()
+model_lr.fit(X, y)
+
+# Prédictions pour les jours existants
+y_pred_lr = model_lr.predict(X)
+
+# Prédictions pour les 7 jours suivants
+future_days = np.arange(france_df['Day'].max()+1, france_df['Day'].max()+8).reshape(-1,1)
+future_pred_lr = model_lr.predict(future_days)
+
+# Visualisation
+plt.figure(figsize=(10,6))
+plt.plot(france_df['Day'], france_df['Confirmed'], label="Cas réels")
+plt.plot(france_df['Day'], y_pred_lr, label="Régression Linéaire", linestyle='--')
+plt.plot(future_days, future_pred_lr, label="Prédiction 7 jours", linestyle='--', color='orange')
+plt.xlabel("Jour depuis le début")
+plt.ylabel("Cas Confirmés")
+plt.title("Régression Linéaire - France")
+plt.legend()
+plt.tight_layout()
+plt.savefig("images/linear_regression_fr.png")
+plt.show()
+
+# -------------------------------
+# 📌 7. Modèle 2 : Random Forest multi-sortie
+# -------------------------------
+X_rf = france_df[['Day']]
+y_rf = france_df[['Confirmed', 'Deaths', 'Recovered']]
+
+X_train, X_test, y_train, y_test = train_test_split(X_rf, y_rf, test_size=0.2, random_state=42)
+
+rf_model = MultiOutputRegressor(RandomForestRegressor(n_estimators=100, random_state=42))
+rf_model.fit(X_train, y_train)
+
+y_pred_rf = rf_model.predict(X_test)
+
+# Évaluation
+mse_confirmed = mean_squared_error(y_test['Confirmed'], y_pred_rf[:, 0])
+r2_confirmed = r2_score(y_test['Confirmed'], y_pred_rf[:, 0])
+
+mse_deaths = mean_squared_error(y_test['Deaths'], y_pred_rf[:, 1])
+r2_deaths = r2_score(y_test['Deaths'], y_pred_rf[:, 1])
+
+mse_recovered = mean_squared_error(y_test['Recovered'], y_pred_rf[:, 2])
+r2_recovered = r2_score(y_test['Recovered'], y_pred_rf[:, 2])
+
+print("🔍 Évaluation du modèle Random Forest :\n")
+print(f"✔️ Confirmed - MSE: {mse_confirmed:.2f} | R²: {r2_confirmed:.2f}")
+print(f"✔️ Deaths    - MSE: {mse_deaths:.2f} | R²: {r2_deaths:.2f}")
+print(f"✔️ Recovered - MSE: {mse_recovered:.2f} | R²: {r2_recovered:.2f}")
+
+# 📈 Visualisation des prédictions (Confirmed, Deaths, Recovered)
+future_rf_days = np.arange(france_df['Day'].max()+1, france_df['Day'].max()+8).reshape(-1,1)
+future_rf_pred = rf_model.predict(future_rf_days)
+
+for i, var in enumerate(['Confirmed', 'Deaths', 'Recovered']):
+    plt.figure(figsize=(10,6))
+    plt.plot(france_df['Day'], france_df[var], label="Données réelles")
+    plt.plot(future_rf_days, future_rf_pred[:, i], label="Prédictions futures", linestyle='--', color='orange')
+    plt.xlabel("Jour depuis le début")
+    plt.ylabel(var)
+    plt.title(f"Prédiction - {var}")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f"images/pred_{var.lower()}.png")
+    plt.show()
