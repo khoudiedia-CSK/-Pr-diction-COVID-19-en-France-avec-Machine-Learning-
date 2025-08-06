@@ -63,11 +63,6 @@ Graphique : Courbe des cas réels vs prédits (droite de tendance)
 ---
 <img width="923" height="543" alt="image" src="https://github.com/user-attachments/assets/27f5f7ef-6347-4f8e-9094-6720d41ee95e" />
 
-Un petit apercu sur le Modèle Machine Learning ARIMA
-
-<img width="1108" height="543" alt="image" src="https://github.com/user-attachments/assets/1032ffa7-9803-4361-999c-c2b7a3f91370" />
-
-
 
 ## 🤖 Partie 2 – Modèle Machine Learning Random Forest
 
