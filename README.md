@@ -1,11 +1,9 @@
-# 📊 Prédiction COVID-19 dans le monde précisément en France avec Machine Learning
+# 📊 Prédiction COVID-19 dans le monde avec Machine Learning
 
 🧠 Contexte
 
 
-Depuis le début de la pandémie de COVID-19, les données sanitaires se sont multipliées, rendant possible leur exploitation à des fins d’analyse et de prévision. Ce projet vise à explorer ces données pour mieux comprendre l’évolution du virus à l’échelle mondiale, puis à développer des modèles prédictifs appliqués à la situation en France.
-
-En combinant analyse exploratoire et modélisation machine learning, le projet permet d’identifier les pays les plus touchés, de visualiser les courbes d’évolution des cas, et de prédire les tendances futures en France à l’aide de deux approches :
+Depuis le début de la pandémie de COVID-19, les données sanitaires se sont multipliées, rendant possible leur exploitation à des fins d’analyse et de prévision. Ce projet vise à explorer ces données pour mieux comprendre l’évolution du virus à l’échelle mondiale, puis à développer des modèles prédictifs.
 
 une régression linéaire simple pour modéliser la croissance des cas confirmés,
 
@@ -46,7 +44,7 @@ Graphique : Barre verticale (bar chart)
 
 ---
 
-### 📐 Modélisation : Régression Linéaire (France)
+### 📐 Modélisation : Régression Linéaire 
 
 - Objectif : prédire les cas confirmés en fonction du temps (jours depuis le début)
 - Modèle : `LinearRegression` (scikit-learn)
@@ -54,7 +52,7 @@ Graphique : Barre verticale (bar chart)
 
 📈 Visualisation :
 
-But : Modéliser l’évolution des cas confirmés en France dans le temps avec une régression linéaire.
+But : Modéliser l’évolution des cas confirmés dans le temps avec une régression linéaire.
 
 Graphique : Courbe des cas réels vs prédits (droite de tendance)
 
